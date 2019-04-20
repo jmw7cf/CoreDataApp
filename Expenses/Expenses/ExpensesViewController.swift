@@ -67,8 +67,14 @@ class ExpensesViewController: UIViewController {
             
             do {
                 try managedContext.save()
+                
+                self.expenses.remove(at: indexPath.row)
+                
+                expensesTableView.deleteRows(at: [indexPath], with: .automatic)
             } catch {
                 print("Delete failed")
+                
+                expensesTableView.reloadRows(at: [indexPath], with: .automatic)
             }
         }
     }
