@@ -28,7 +28,21 @@ class SingleExpenseViewController: UIViewController {
     }
     
     @IBAction func saveExpense(_ sender: Any) {
-        
+        let name = nameTextField.text
+        let amountText = amountTextField.text ?? ""
+        let amount = Double(amountText) ?? 0.0
+        let date = datePicker.date
+    
+        if let expense = Expense(name: name, amount: amount, date: date) {
+            do {
+                let managedContext = expense.managedObjectContext
+                try managedContext?.save()
+                
+                self.navigationController?.popViewController(animated: true)
+            } catch {
+                print("Context could not be saved")
+            }
+        }
     }
 }
 
