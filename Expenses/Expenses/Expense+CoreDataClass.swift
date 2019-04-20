@@ -31,7 +31,7 @@ public class Expense: NSManagedObject {
         self.init(entity: Expense.entity(), insertInto: managedContext)
 
         self.name = name
-        self.amount = amount
+        self.amount = String(amount)
         self.date = date
     }
 }

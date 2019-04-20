@@ -47,7 +47,30 @@ class ExpensesViewController: UIViewController {
     }
     
     @IBAction func addNewExpense(_ sender: Any) {
+        performSegue(withIdentifier: "showExpense", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let destination = segue.destination as? SingleExpenseViewController,
+            let selectedRow = self.expensesTableView.indexPathForSelectedRow else {
+                return
+        }
         
+        destination.existingExpense = expenses[selectedRow.row]
+    }
+    
+    func deleteExpense(at indexPath: IndexPath) {
+        let expense = expenses[indexPath.row]
+        
+        if let managedContext = expense.managedObjectContext {
+            managedContext.delete(expense)
+            
+            do {
+                try managedContext.save()
+            } catch {
+                print("Delete failed")
+            }
+        }
     }
 
 }
